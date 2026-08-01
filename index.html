@@ -94,8 +94,9 @@
   .bb-sub-label{font-size:10px;color:var(--text-dim);font-weight:600;}
 
   .bar-container{position:relative;margin:8px 0 4px;}
-  .bar-track{height:20px;background:#E2E8F0;border-radius:4px;overflow:hidden;display:flex;box-shadow:inset 0 1px 3px rgba(0,0,0,.15);}
-  .bar-seg{height:100%;transition:width 0.4s cubic-bezier(0.4,0,0.2,1);}
+  .bar-track{height:20px;background:#E2E8F0;border-radius:4px;overflow:hidden;position:relative;box-shadow:inset 0 1px 3px rgba(0,0,0,.15);}
+  .bar-seg-left{position:absolute;left:0;top:0;height:100%;transition:width 0.4s cubic-bezier(0.4,0,0.2,1);}
+  .bar-seg-right{position:absolute;right:0;top:0;height:100%;transition:width 0.4s cubic-bezier(0.4,0,0.2,1);}
   .win-line{position:absolute;top:-4px;bottom:-4px;left:50%;width:2px;background:var(--navy-head);z-index:2;border-left:1px dashed #fff;}
 
   /* MAPA AMPLIADO */
@@ -954,14 +955,12 @@ function renderBroadcastBoard(){
     </div>
   `;
 
-  bar.innerHTML = "";
-  race.candidates.forEach(c=>{
-    const pct = totalPossible ? (scores[c.id]/totalPossible*100) : 0;
-    if(pct <= 0) return;
-    const seg = document.createElement("div"); seg.className = "bar-seg";
-    seg.style.width = pct + "%"; seg.style.background = c.color;
-    bar.appendChild(seg);
-  });
+  const pct1 = totalPossible ? (scores[c1.id]/totalPossible*100) : 0;
+  const pct2 = totalPossible ? (scores[c2.id]/totalPossible*100) : 0;
+  bar.innerHTML = `
+    <div class="bar-seg-left" style="width:${pct1}%;background:${c1.color}"></div>
+    <div class="bar-seg-right" style="width:${pct2}%;background:${c2.color}"></div>
+  `;
 }
 
 function renderTicker(){
