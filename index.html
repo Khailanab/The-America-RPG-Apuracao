@@ -421,8 +421,24 @@ function getStateCalculation(abbr){
   let totalPopWeight = 0;
   feats.forEach(f => {
     const p = getCountyDemoProfile(String(f.id).padStart(5,"0"));
-    profiles[f.id] = p; totalPopWeight += p.popWeight;
+    profiles[f.id] = { ...p }; totalPopWeight += p.popWeight;
   });
+
+  // Evita que um único condado (ex: a capital/metrópole) monopolize a
+  // população simulada em estados com poucos condados (MA, RI, DE, CT, HI...).
+  // Sem isso, 1 condado podia representar >50% do "peso" do estado inteiro.
+  const CAP_SHARE = 0.35;
+  let anyCapped = false;
+  Object.keys(profiles).forEach(id => {
+    if(profiles[id].popWeight > totalPopWeight * CAP_SHARE){
+      profiles[id].popWeight = totalPopWeight * CAP_SHARE;
+      anyCapped = true;
+    }
+  });
+  if(anyCapped){
+    totalPopWeight = 0;
+    Object.keys(profiles).forEach(id => totalPopWeight += profiles[id].popWeight);
+  }
 
   const statePop = STATE_BY_ABBR[abbr] ? STATE_BY_ABBR[abbr].pop : 1000000;
   const countyPops = {};
@@ -440,15 +456,11 @@ function getStateCalculation(abbr){
   });
 
   const demBaseState = demCandId ? (st.pct[demCandId] || 0) : 50;
-  const rawScores = {};
-  candidates.forEach(c => rawScores[c.id] = 0);
   const countyRaw = {};
 
   feats.forEach(f => {
     countyRaw[f.id] = {};
     const prof = profiles[f.id];
-    let sumRaw = 0;
-    
     candidates.forEach(c => {
       let val = Math.max(0, st.pct[c.id] || 0);
       if(c.id === demCandId){
@@ -456,17 +468,26 @@ function getStateCalculation(abbr){
       } else if(c.id === repCandId){
         val = Math.max(5, Math.min(95, (100 - demBaseState) - prof.swingOffsetDem));
       }
-      countyRaw[f.id][c.id] = val; sumRaw += val;
-    });
-
-    candidates.forEach(c => {
-      const normVal = countyPops[f.id] * ((countyRaw[f.id][c.id] / sumRaw) * 100);
-      countyRaw[f.id][c.id] = normVal; rawScores[c.id] += normVal;
+      countyRaw[f.id][c.id] = val;
     });
   });
 
-  const targetVotes = {};
-  candidates.forEach(c => { targetVotes[c.id] = actualTotalPop * ((st.pct[c.id] || 0) / 100); });
+  // Corrige a média estadual com um DESLOCAMENTO ADITIVO (soma/subtrai o
+  // mesmo tanto em todo condado), em vez de multiplicar cada candidato por
+  // um fator diferente — a técnica antiga podia inverter a cor de um
+  // condado inteiro quando o modelo bruto divergia muito da % definida
+  // pelo admin (ex: condado vermelho no modelo virava azul depois do ajuste).
+  if(demCandId && repCandId){
+    let weightedDemSum = 0, weightTotal = 0;
+    feats.forEach(f => { weightedDemSum += countyPops[f.id] * countyRaw[f.id][demCandId]; weightTotal += countyPops[f.id]; });
+    const rawAvgDem = weightTotal > 0 ? weightedDemSum / weightTotal : demBaseState;
+    const shift = demBaseState - rawAvgDem;
+    feats.forEach(f => {
+      const shiftedDem = Math.max(2, Math.min(98, countyRaw[f.id][demCandId] + shift));
+      countyRaw[f.id][demCandId] = shiftedDem;
+      countyRaw[f.id][repCandId] = 100 - shiftedDem;
+    });
+  }
 
   const countiesRes = {};
   const totalEffVotes = {};
@@ -489,14 +510,10 @@ function getStateCalculation(abbr){
         finalPct[c.id] = sumOver > 0 ? (Math.max(0, overrideData.pct[c.id] || 0) / sumOver) * 100 : 0;
       });
     } else {
-      let sumProj = 0;
-      const projVotes = {};
+      let sumRaw2 = 0;
+      candidates.forEach(c => sumRaw2 += Math.max(0, countyRaw[f.id][c.id] || 0));
       candidates.forEach(c => {
-        const v = rawScores[c.id] > 0 ? countyRaw[f.id][c.id] * (targetVotes[c.id] / rawScores[c.id]) : 0;
-        projVotes[c.id] = v; sumProj += v;
-      });
-      candidates.forEach(c => {
-        finalPct[c.id] = sumProj > 0 ? (projVotes[c.id] / sumProj) * 100 : 0;
+        finalPct[c.id] = sumRaw2 > 0 ? (Math.max(0, countyRaw[f.id][c.id] || 0) / sumRaw2) * 100 : 0;
       });
     }
 
@@ -909,7 +926,7 @@ function renderBroadcastBoard(){
 
   relevantStates.forEach(s=>{
     const lead = leadingCandidate(activeRace, s.a);
-    if(lead && lead.cand) scores[lead.cand.id] += isPres ? s.ev : 1;
+    if(lead && lead.cand && lead.projected) scores[lead.cand.id] += isPres ? s.ev : 1;
   });
 
   const totalPossible = isPres ? 538 : relevantStates.length;
