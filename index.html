@@ -75,6 +75,8 @@
   .bb-name{font-size:18px;font-weight:800;color:var(--text-hi);margin-top:2px;display:flex;align-items:center;gap:8px;}
   .bb-cand.right .bb-name{justify-content:flex-end;}
   .bb-party{font-size:12px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;}
+  .bb-popular{font-size:12px;color:var(--text-mid);margin-top:4px;font-family:'Consolas','Menlo',monospace;}
+  .bb-popular b{color:var(--text-hi);font-weight:800;}
 
   .badge-eleito{background:var(--green-eleito);color:#FFFFFF;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border-radius:4px;}
   .badge-projetado{background:#D97706;color:#FFFFFF;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border-radius:4px;}
@@ -331,19 +333,19 @@ try{
 }
 
 const STATES = [
-  {a:"AL",n:"Alabama",ev:9,pop:5074296}, {a:"AK",n:"Alasca",ev:3,pop:733583}, {a:"AZ",n:"Arizona",ev:7,pop:7359197}, {a:"AR",n:"Arkansas",ev:6,pop:3045637},
-  {a:"CA",n:"Califórnia",ev:47,pop:39029342}, {a:"CO",n:"Colorado",ev:8,pop:5839926}, {a:"CT",n:"Connecticut",ev:8,pop:3626205}, {a:"DE",n:"Delaware",ev:3,pop:1018396},
-  {a:"DC",n:"Distrito de Columbia",ev:3,pop:671803}, {a:"FL",n:"Flórida",ev:21,pop:22244823}, {a:"GA",n:"Geórgia",ev:12,pop:10912876}, {a:"HI",n:"Havaí",ev:4,pop:1440196},
-  {a:"ID",n:"Idaho",ev:4,pop:1939033}, {a:"IL",n:"Illinois",ev:24,pop:12582032}, {a:"IN",n:"Indiana",ev:12,pop:6833037}, {a:"IA",n:"Iowa",ev:8,pop:3200517},
-  {a:"KS",n:"Kansas",ev:7,pop:2937150}, {a:"KY",n:"Kentucky",ev:9,pop:4512310}, {a:"LA",n:"Luisiana",ev:10,pop:4590241}, {a:"ME",n:"Maine",ev:4,pop:1385340},
-  {a:"MD",n:"Maryland",ev:10,pop:6164660}, {a:"MA",n:"Massachusetts",ev:13,pop:6981974}, {a:"MI",n:"Michigan",ev:20,pop:10034113}, {a:"MN",n:"Minnesota",ev:10,pop:5717184},
-  {a:"MS",n:"Mississippi",ev:7,pop:2940057}, {a:"MO",n:"Missouri",ev:11,pop:6177957}, {a:"MT",n:"Montana",ev:4,pop:1122867}, {a:"NE",n:"Nebraska",ev:5,pop:1967923},
-  {a:"NV",n:"Nevada",ev:4,pop:3177772}, {a:"NH",n:"New Hampshire",ev:4,pop:1395231}, {a:"NJ",n:"Nova Jersey",ev:16,pop:9261699}, {a:"NM",n:"Novo México",ev:5,pop:2113344},
-  {a:"NY",n:"Nova York",ev:36,pop:19677151}, {a:"NC",n:"Carolina do Norte",ev:13,pop:10698973}, {a:"ND",n:"Dakota do Norte",ev:3,pop:779261}, {a:"OH",n:"Ohio",ev:23,pop:11756058},
-  {a:"OK",n:"Oklahoma",ev:8,pop:4019800}, {a:"OR",n:"Oregon",ev:7,pop:4240137}, {a:"PA",n:"Pensilvânia",ev:25,pop:12972008}, {a:"RI",n:"Rhode Island",ev:4,pop:1093734},
-  {a:"SC",n:"Carolina do Sul",ev:8,pop:5282634}, {a:"SD",n:"Dakota do Sul",ev:3,pop:909824}, {a:"TN",n:"Tennessee",ev:11,pop:7051339}, {a:"TX",n:"Texas",ev:29,pop:30029572},
-  {a:"UT",n:"Utah",ev:5,pop:3380800}, {a:"VT",n:"Vermont",ev:3,pop:647064}, {a:"VA",n:"Virgínia",ev:12,pop:8683619}, {a:"WA",n:"Washington",ev:10,pop:7785786},
-  {a:"WV",n:"Virgínia Ocidental",ev:6,pop:1775156}, {a:"WI",n:"Wisconsin",ev:11,pop:5892539}, {a:"WY",n:"Wyoming",ev:3,pop:581381}
+  {a:"AL",n:"Alabama",ev:9,pop:5074296,votes2020:2323304}, {a:"AK",n:"Alasca",ev:3,pop:733583,votes2020:391346}, {a:"AZ",n:"Arizona",ev:7,pop:7359197,votes2020:3387326}, {a:"AR",n:"Arkansas",ev:6,pop:3045637,votes2020:1219069},
+  {a:"CA",n:"Califórnia",ev:47,pop:39029342,votes2020:17495906}, {a:"CO",n:"Colorado",ev:8,pop:5839926,votes2020:3256953}, {a:"CT",n:"Connecticut",ev:8,pop:3626205,votes2020:1824280}, {a:"DE",n:"Delaware",ev:3,pop:1018396,votes2020:504010},
+  {a:"DC",n:"Distrito de Columbia",ev:3,pop:671803,votes2020:344356}, {a:"FL",n:"Flórida",ev:21,pop:22244823,votes2020:11067456}, {a:"GA",n:"Geórgia",ev:12,pop:10912876,votes2020:4997716}, {a:"HI",n:"Havaí",ev:4,pop:1440196,votes2020:574469},
+  {a:"ID",n:"Idaho",ev:4,pop:1939033,votes2020:868105}, {a:"IL",n:"Illinois",ev:24,pop:12582032,votes2020:6038850}, {a:"IN",n:"Indiana",ev:12,pop:6833037,votes2020:3033198}, {a:"IA",n:"Iowa",ev:8,pop:3200517,votes2020:1690871},
+  {a:"KS",n:"Kansas",ev:7,pop:2937150,votes2020:1349567}, {a:"KY",n:"Kentucky",ev:9,pop:4512310,votes2020:2136768}, {a:"LA",n:"Luisiana",ev:10,pop:4590241,votes2020:2148062}, {a:"ME",n:"Maine",ev:4,pop:1385340,votes2020:813740},
+  {a:"MD",n:"Maryland",ev:10,pop:6164660,votes2020:3037030}, {a:"MA",n:"Massachusetts",ev:13,pop:6981974,votes2020:3631402}, {a:"MI",n:"Michigan",ev:20,pop:10034113,votes2020:5539302}, {a:"MN",n:"Minnesota",ev:10,pop:5717184,votes2020:3277171},
+  {a:"MS",n:"Mississippi",ev:7,pop:2940057,votes2020:1315178}, {a:"MO",n:"Missouri",ev:11,pop:6177957,votes2020:3025962}, {a:"MT",n:"Montana",ev:4,pop:1122867,votes2020:605750}, {a:"NE",n:"Nebraska",ev:5,pop:1967923,votes2020:956379},
+  {a:"NV",n:"Nevada",ev:4,pop:3177772,votes2020:1405376}, {a:"NH",n:"New Hampshire",ev:4,pop:1395231,votes2020:804430}, {a:"NJ",n:"Nova Jersey",ev:16,pop:9261699,votes2020:4564234}, {a:"NM",n:"Novo México",ev:5,pop:2113344,votes2020:923965},
+  {a:"NY",n:"Nova York",ev:36,pop:19677151,votes2020:8616205}, {a:"NC",n:"Carolina do Norte",ev:13,pop:10698973,votes2020:5524801}, {a:"ND",n:"Dakota do Norte",ev:3,pop:779261,votes2020:361819}, {a:"OH",n:"Ohio",ev:23,pop:11756058,votes2020:5922202},
+  {a:"OK",n:"Oklahoma",ev:8,pop:4019800,votes2020:1560699}, {a:"OR",n:"Oregon",ev:7,pop:4240137,votes2020:2374321}, {a:"PA",n:"Pensilvânia",ev:25,pop:12972008,votes2020:6925255}, {a:"RI",n:"Rhode Island",ev:4,pop:1093734,votes2020:516383},
+  {a:"SC",n:"Carolina do Sul",ev:8,pop:5282634,votes2020:2513329}, {a:"SD",n:"Dakota do Sul",ev:3,pop:909824,votes2020:422609}, {a:"TN",n:"Tennessee",ev:11,pop:7051339,votes2020:3053851}, {a:"TX",n:"Texas",ev:29,pop:30029572,votes2020:11317911},
+  {a:"UT",n:"Utah",ev:5,pop:3380800,votes2020:1488289}, {a:"VT",n:"Vermont",ev:3,pop:647064,votes2020:367428}, {a:"VA",n:"Virgínia",ev:12,pop:8683619,votes2020:4460524}, {a:"WA",n:"Washington",ev:10,pop:7785786,votes2020:4087631},
+  {a:"WV",n:"Virgínia Ocidental",ev:6,pop:1775156,votes2020:794652}, {a:"WI",n:"Wisconsin",ev:11,pop:5892539,votes2020:3297352}, {a:"WY",n:"Wyoming",ev:3,pop:581381,votes2020:276765}
 ];
 const STATE_BY_ABBR = {};
 STATES.forEach(s=> STATE_BY_ABBR[s.a] = s);
@@ -469,38 +471,29 @@ function getStateCalculation(abbr){
   });
 
   const demBaseState = demCandId ? (st.pct[demCandId] || 0) : 50;
-  const countyRaw = {};
 
+  // Valor de EXIBIÇÃO por condado — só usado para colorir o mapa e o
+  // tooltip daquele condado especificamente (o "tempero" real de 2020).
+  // NUNCA entra na conta do agregado do estado — é só estética.
+  const countyDisplay = {};
   feats.forEach(f => {
-    countyRaw[f.id] = {};
+    countyDisplay[f.id] = {};
     const prof = profiles[f.id];
     candidates.forEach(c => {
       let val = Math.max(0, st.pct[c.id] || 0);
       if(c.id === demCandId){
-        val = Math.max(5, Math.min(95, demBaseState + prof.swingOffsetDem));
+        val = Math.max(2, Math.min(98, demBaseState + prof.swingOffsetDem));
       } else if(c.id === repCandId){
-        val = Math.max(5, Math.min(95, (100 - demBaseState) - prof.swingOffsetDem));
+        val = Math.max(2, Math.min(98, (100 - demBaseState) - prof.swingOffsetDem));
       }
-      countyRaw[f.id][c.id] = val;
+      countyDisplay[f.id][c.id] = val;
+    });
+    let sumDisp = 0;
+    candidates.forEach(c => sumDisp += Math.max(0, countyDisplay[f.id][c.id] || 0));
+    candidates.forEach(c => {
+      countyDisplay[f.id][c.id] = sumDisp > 0 ? (Math.max(0, countyDisplay[f.id][c.id] || 0) / sumDisp) * 100 : 0;
     });
   });
-
-  // Corrige a média estadual com um DESLOCAMENTO ADITIVO (soma/subtrai o
-  // mesmo tanto em todo condado), em vez de multiplicar cada candidato por
-  // um fator diferente — a técnica antiga podia inverter a cor de um
-  // condado inteiro quando o modelo bruto divergia muito da % definida
-  // pelo admin (ex: condado vermelho no modelo virava azul depois do ajuste).
-  if(demCandId && repCandId){
-    let weightedDemSum = 0, weightTotal = 0;
-    feats.forEach(f => { weightedDemSum += countyPops[f.id] * countyRaw[f.id][demCandId]; weightTotal += countyPops[f.id]; });
-    const rawAvgDem = weightTotal > 0 ? weightedDemSum / weightTotal : demBaseState;
-    const shift = demBaseState - rawAvgDem;
-    feats.forEach(f => {
-      const shiftedDem = Math.max(2, Math.min(98, countyRaw[f.id][demCandId] + shift));
-      countyRaw[f.id][demCandId] = shiftedDem;
-      countyRaw[f.id][repCandId] = 100 - shiftedDem;
-    });
-  }
 
   const countiesRes = {};
   const totalEffVotes = {};
@@ -512,27 +505,27 @@ function getStateCalculation(abbr){
     const isOverride = st.counties && st.counties[f.id] !== undefined;
     const overrideData = isOverride ? st.counties[f.id] : null;
 
-    const finalPct = {};
     let rep = st.reporting || 0;
+    // effPct = o que efetivamente conta pra MÉDIA DO ESTADO. Sem override,
+    // é exatamente o que o admin lançou pra base do estado inteiro (sem
+    // nenhum viés/tempero) — só com override de condado é que muda de
+    // verdade, porque aí é um dado real que o admin forneceu.
+    let effPct = { ...st.pct };
+    let displayPct = countyDisplay[f.id];
 
     if(isOverride){
       rep = overrideData.reporting !== undefined ? overrideData.reporting : 100;
       let sumOver = 0;
       candidates.forEach(c => sumOver += Math.max(0, overrideData.pct[c.id] || 0));
-      candidates.forEach(c => {
-        finalPct[c.id] = sumOver > 0 ? (Math.max(0, overrideData.pct[c.id] || 0) / sumOver) * 100 : 0;
-      });
-    } else {
-      let sumRaw2 = 0;
-      candidates.forEach(c => sumRaw2 += Math.max(0, countyRaw[f.id][c.id] || 0));
-      candidates.forEach(c => {
-        finalPct[c.id] = sumRaw2 > 0 ? (Math.max(0, countyRaw[f.id][c.id] || 0) / sumRaw2) * 100 : 0;
-      });
+      const normOver = {};
+      candidates.forEach(c => { normOver[c.id] = sumOver > 0 ? (Math.max(0, overrideData.pct[c.id] || 0) / sumOver) * 100 : 0; });
+      effPct = normOver;
+      displayPct = normOver; // condado com apuração real mostra o valor real, não o simulado
     }
 
-    countiesRes[f.id] = { pop, pct: finalPct, reporting: rep, isOverride };
+    countiesRes[f.id] = { pop, pct: displayPct, reporting: rep, isOverride };
     totalEffReportingPop += pop * (rep / 100);
-    candidates.forEach(c => { totalEffVotes[c.id] += pop * (finalPct[c.id] / 100); });
+    candidates.forEach(c => { totalEffVotes[c.id] += pop * ((effPct[c.id] || 0) / 100); });
   });
 
   const stateEffPct = {};
@@ -926,6 +919,29 @@ function positionTooltip(e){
 function hideTooltip(){ document.getElementById("tooltip").style.display = "none"; }
 
 // RENDERIZAÇÃO DA BARRA BROADCAST DO TOPO
+// Voto popular nacional: soma, estado a estado, os votos já "apurados" até
+// agora (peso real = quantidade de votos que aquele estado teve em 2020,
+// escalado pelo % apurado que o admin lançou), multiplicado pela % de cada
+// candidato NAQUELE estado. Isso pondera corretamente por tamanho real do
+// estado (Califórnia pesa muito mais que Wyoming), em vez de tratar todo
+// estado como igual.
+function computeNationalPopularVote(){
+  const race = data.races.president;
+  const totals = {};
+  race.candidates.forEach(c => totals[c.id] = 0);
+  let totalCounted = 0;
+  STATES.forEach(s => {
+    const calc = getStateCalculation(s.a);
+    const weight = s.votes2020 || 0;
+    const countedVotes = weight * ((calc.stateEffReporting || 0) / 100);
+    totalCounted += countedVotes;
+    race.candidates.forEach(c => {
+      totals[c.id] += countedVotes * ((calc.stateEffPct[c.id] || 0) / 100);
+    });
+  });
+  return { totals, totalCounted };
+}
+
 function renderBroadcastBoard(){
   const race = data.races[activeRace];
   const bbTop = document.getElementById("bbTop");
@@ -960,6 +976,15 @@ function renderBroadcastBoard(){
   const isWinner1 = isPres && (scores[c1.id] >= targetWin);
   const isWinner2 = isPres && (scores[c2.id] >= targetWin);
 
+  let popularHtml1 = "", popularHtml2 = "";
+  if(isPres){
+    const pop = computeNationalPopularVote();
+    const fmtVotes = (n) => Math.round(n).toLocaleString("pt-BR");
+    const pctOf = (id) => pop.totalCounted > 0 ? ((pop.totals[id]||0) / pop.totalCounted * 100) : 0;
+    popularHtml1 = `<div class="bb-popular">Voto popular: <b>${pctOf(c1.id).toFixed(1)}%</b> · ${fmtVotes(pop.totals[c1.id]||0)} votos</div>`;
+    popularHtml2 = `<div class="bb-popular">Voto popular: <b>${pctOf(c2.id).toFixed(1)}%</b> · ${fmtVotes(pop.totals[c2.id]||0)} votos</div>`;
+  }
+
   bbTop.innerHTML = `
     <div class="bb-cand">
       <div class="bb-photo-wrap" style="border-color:${c1.color};background:${c1.color}">${getAvatarHtml(c1)}</div>
@@ -967,6 +992,7 @@ function renderBroadcastBoard(){
         <div class="bb-score">${scores[c1.id]}</div>
         <div class="bb-name">${c1.name} ${isWinner1 ? '<span class="badge-eleito">Eleito</span>':''}</div>
         <div class="bb-party">${c1.party}</div>
+        ${popularHtml1}
       </div>
     </div>
     
@@ -981,6 +1007,7 @@ function renderBroadcastBoard(){
         <div class="bb-score">${scores[c2.id]}</div>
         <div class="bb-name">${isWinner2 ? '<span class="badge-eleito">Eleito</span> ':''}${c2.name}</div>
         <div class="bb-party">${c2.party}</div>
+        ${popularHtml2}
       </div>
     </div>
   `;
