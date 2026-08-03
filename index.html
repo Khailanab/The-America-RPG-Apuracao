@@ -112,7 +112,7 @@
   
   .dc-tile{position:absolute;right:1.5%;bottom:19%;width:26px;height:26px;background:var(--navy-head);border:2px solid #FFFFFF;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;cursor:pointer;color:#fff;transition:transform .15s ease;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.25);}
   .dc-tile:hover{transform:scale(1.15);}
-  .zoom-controls{position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:5px;z-index:3;}
+  .zoom-controls{position:absolute;top:12px;left:12px;display:flex;flex-direction:column;gap:5px;z-index:3;}
   .zoom-btn{width:32px;height:32px;background:#FFFFFF;border:1px solid var(--line-strong);color:var(--text-hi);border-radius:4px;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;box-shadow:0 2px 4px rgba(0,0,0,.1);}
   .zoom-btn:hover{border-color:var(--navy-head);color:var(--navy-head);background:#F8FAFC;}
   .zoom-btn.reset{font-size:9px;letter-spacing:.5px;text-transform:uppercase;font-weight:800;width:auto;padding:0 8px;height:26px;margin-top:4px;}
@@ -126,6 +126,42 @@
   #tooltip .tt-name{flex:1;color:#E2E8F0;font-family:'Segoe UI',Arial,sans-serif;font-weight:600;}
   #tooltip .tt-pct{font-weight:800;color:#FFFFFF;}
   .tt-badge{display:inline-block;background:#2563EB;color:#fff;font-size:9px;padding:1px 6px;border-radius:3px;margin-left:6px;font-weight:800;text-transform:uppercase;}
+
+  /* Cartão de detalhes do estado — aparece ao CLICAR (não no hover) */
+  .state-detail-card{position:absolute;top:12px;right:12px;width:min(320px, 46%);
+    background:#FFFFFF;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.35);
+    overflow:hidden;z-index:10;font-family:'Segoe UI',Arial,Helvetica,sans-serif;
+    max-height:calc(100% - 24px);display:flex;flex-direction:column;}
+  .sdc-header{padding:14px 34px 12px 14px;position:relative;color:#fff;}
+  .sdc-close{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;
+    background:rgba(255,255,255,.25);border:none;color:#fff;font-size:15px;line-height:1;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
+  .sdc-close:hover{background:rgba(255,255,255,.4);}
+  .sdc-tags{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
+  .sdc-tag{font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+    padding:2px 7px;border-radius:3px;background:rgba(255,255,255,.22);color:#fff;}
+  .sdc-tag.projected{background:#FFFFFF;color:#111;}
+  .sdc-title{font-size:17px;font-weight:800;margin-bottom:4px;line-height:1.2;}
+  .sdc-sub{font-size:12px;font-weight:600;opacity:.92;}
+  .sdc-body{padding:8px 0;overflow-y:auto;}
+  .sdc-colheads{display:grid;grid-template-columns:1fr 56px 76px;gap:6px;padding:4px 14px;
+    font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--text-dim);}
+  .sdc-row{display:grid;grid-template-columns:1fr 56px 76px;gap:6px;align-items:center;
+    padding:8px 14px;border-left:4px solid transparent;}
+  .sdc-row.leading{background:#F1F5F9;}
+  .sdc-cand{display:flex;align-items:center;gap:8px;min-width:0;}
+  .sdc-avatar{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;
+    background:var(--panel-2);color:#fff;font-size:10px;font-weight:800;display:flex;
+    align-items:center;justify-content:center;}
+  .sdc-cand-name{font-size:12.5px;font-weight:700;color:var(--text-hi);line-height:1.15;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sdc-cand-party{font-size:10.5px;color:var(--text-dim);}
+  .sdc-pct{font-size:13px;font-weight:800;text-align:right;color:var(--text-hi);}
+  .sdc-votes{font-size:11px;text-align:right;color:var(--text-mid);font-family:'Consolas','Menlo',monospace;}
+  .sdc-footer{padding:10px 14px;border-top:1px solid var(--line-soft);font-size:11px;color:var(--text-mid);}
+  .sdc-footer .sdc-badge{display:inline-block;font-weight:800;font-size:10px;text-transform:uppercase;
+    padding:2px 6px;border-radius:3px;margin-left:6px;}
+  @media (max-width:640px){ .state-detail-card{width:calc(100% - 20px); right:10px; left:10px;} }
 
   .ticker{margin-top:16px;border-top:1px solid var(--line);padding-top:12px;font-size:12px;color:var(--text-mid);font-family:'Consolas','Menlo',monospace;display:flex;gap:10px;flex-wrap:wrap;}
   .ticker b{color:var(--navy-head);}
@@ -200,6 +236,19 @@
         <button class="zoom-btn" id="zoomInBtn" title="Aproximar">+</button>
         <button class="zoom-btn" id="zoomOutBtn" title="Afastar">−</button>
         <button class="zoom-btn reset" id="zoomResetBtn" title="Ver mapa completo">Tudo</button>
+      </div>
+      <div class="state-detail-card" id="stateDetailCard" style="display:none;">
+        <button class="sdc-close" id="sdcCloseBtn" title="Fechar">×</button>
+        <div class="sdc-header" id="sdcHeader">
+          <div class="sdc-tags" id="sdcTags"></div>
+          <div class="sdc-title" id="sdcTitle"></div>
+          <div class="sdc-sub" id="sdcSub"></div>
+        </div>
+        <div class="sdc-body">
+          <div class="sdc-colheads"><span>Candidato</span><span style="text-align:right;">%</span><span style="text-align:right;">Votos</span></div>
+          <div id="sdcTable"></div>
+        </div>
+        <div class="sdc-footer" id="sdcFooter"></div>
       </div>
     </div>
     <div class="ticker" id="ticker"></div>
@@ -608,6 +657,7 @@ let projectionRef = null;
 let countyGeoCache = null;
 let countyG = null;
 let countyStateAbbr = null;
+let detailStateAbbr = null;
 const MAP_W = 960, MAP_H = 600;
 
 async function loadData(){
@@ -732,6 +782,7 @@ async function ensureMapBuilt(){
           this.addEventListener("mouseleave", hideTooltip);
           this.addEventListener("click", ()=>{
             zoomToBounds(path.bounds(d)); showCounties(abbr);
+            detailStateAbbr = abbr; renderStateDetailCard();
             if(isAdmin){ document.getElementById("stateSelect").value = abbr; onStateSelectChange(); }
           });
         }
@@ -753,6 +804,7 @@ async function ensureMapBuilt(){
     if(!projectionRef) return;
     const p = projectionRef([-77.0369, 38.9072]);
     if(p) zoomToBounds([[p[0]-8,p[1]-8],[p[0]+8,p[1]+8]]);
+    detailStateAbbr = "DC"; renderStateDetailCard();
   });
 
   document.getElementById("zoomInBtn").addEventListener("click", ()=>{
@@ -764,6 +816,10 @@ async function ensureMapBuilt(){
   document.getElementById("zoomResetBtn").addEventListener("click", ()=>{
     if(zoomBehavior && svgSel) svgSel.transition().duration(400).call(zoomBehavior.transform, d3.zoomIdentity);
     clearCounties();
+    detailStateAbbr = null; renderStateDetailCard();
+  });
+  document.getElementById("sdcCloseBtn").addEventListener("click", ()=>{
+    detailStateAbbr = null; renderStateDetailCard();
   });
 }
 
@@ -775,7 +831,12 @@ function clearCounties(){
 function stateFillColor(abbr){
   if(RACE_NO_DC[activeRace] && abbr === "DC") return "#CBD5E1";
   const lead = leadingCandidate(activeRace, abbr);
-  if(lead && lead.cand) return getIntensityColor(lead.cand.color, lead.margin);
+  if(lead && lead.cand){
+    // Estado projetado: cor sólida e igual pra todo mundo que ganhou aquele
+    // candidato, independente da margem — não varia de intensidade.
+    if(lead.projected) return lead.cand.color;
+    return getIntensityColor(lead.cand.color, lead.margin);
+  }
   if(lead && lead.tie) return "#64748B";
   return "#CBD5E1";
 }
@@ -856,7 +917,7 @@ function showCountyTooltip(e, countyName, abbr, countyId){
   const rows = getCandidates(activeRace, abbr)
     .map(c=>({c, pct: (cData ? (cData.pct[c.id]||0) : 0)}))
     .sort((a,b)=>b.pct - a.pct)
-    .map(x=>`<div class="tt-row"><span class="tt-dot" style="background:${x.c.color}"></span><span class="tt-name">${x.c.name}</span><span class="tt-pct">${x.pct.toFixed(1)}%</span></div>`)
+    .map(x=>`<div class="tt-row"><span class="tt-dot" style="background:${x.c.color}"></span><span class="tt-name">${x.c.name}</span><span class="tt-pct">${x.pct.toFixed(2)}%</span></div>`)
     .join("");
 
   tt.innerHTML = `<div class="tt-state">${countyName}${badge}</div>
@@ -878,6 +939,80 @@ function zoomToBounds(bounds, paddingFactor){
     .call(zoomBehavior.transform, d3.zoomIdentity.translate(MAP_W/2 - scale*cx, MAP_H/2 - scale*cy).scale(scale));
 }
 
+function candAvatarHtml(c){
+  const initials = (c.name||"?").trim().slice(0,2).toUpperCase();
+  if(c.photo && c.photo.trim() !== ""){
+    return `<img src="${c.photo}" class="sdc-avatar" onerror="this.outerHTML='<span class=&quot;sdc-avatar&quot; style=&quot;background:${c.color}&quot;>${initials}</span>';">`;
+  }
+  return `<span class="sdc-avatar" style="background:${c.color}">${initials}</span>`;
+}
+
+function renderStateDetailCard(){
+  const card = document.getElementById("stateDetailCard");
+  if(!detailStateAbbr){ card.style.display = "none"; return; }
+  const abbr = detailStateAbbr;
+  const s = STATE_BY_ABBR[abbr];
+  if(!s){ card.style.display = "none"; return; }
+
+  const isPres = activeRace === "president";
+  if(RACE_NO_DC[activeRace] && abbr === "DC"){
+    card.style.display = "none";
+    return;
+  }
+
+  const candidates = getCandidates(activeRace, abbr);
+  const calc = getStateCalculation(abbr);
+  const lead = leadingCandidate(activeRace, abbr);
+  const reporting = calc.stateEffReporting || 0;
+  const countedVotes = (s.votes2020 || 0) * (reporting / 100);
+
+  const rows = candidates
+    .map(c => ({ c, pct: calc.stateEffPct[c.id] || 0 }))
+    .sort((a,b) => b.pct - a.pct);
+
+  const seatLabel = isPres ? `${s.ev} votos eleitorais` : "1 cadeira em disputa";
+  const leaderTag = (lead && lead.cand) ? `${lead.cand.name.split(" ")[0]} ${isPres ? lead.cand.name.split(" ")[0] : ""}`.trim() : "";
+
+  const headerColor = (lead && lead.cand) ? lead.cand.color : "#64748B";
+  document.getElementById("sdcHeader").style.background = headerColor;
+
+  const tags = [];
+  if(lead && lead.projected) tags.push(`<span class="sdc-tag projected" style="color:${headerColor}">Ganhador Projetado</span>`);
+  else tags.push(`<span class="sdc-tag">Apurando</span>`);
+  document.getElementById("sdcTags").innerHTML = tags.join("");
+
+  document.getElementById("sdcTitle").textContent = `${RACE_LABELS[activeRace]}: ${s.n}`;
+  document.getElementById("sdcSub").textContent = (lead && lead.cand)
+    ? `${seatLabel} · ${lead.cand.name.split(" ").slice(-1)[0]} ${lead.projected ? "(projetado)" : "à frente"}`
+    : seatLabel;
+
+  document.getElementById("sdcTable").innerHTML = rows.map((r,idx)=>{
+    const votes = Math.round(countedVotes * (r.pct/100));
+    return `<div class="sdc-row ${idx===0 ? 'leading':''}" style="border-left-color:${idx===0 ? r.c.color : 'transparent'}">
+      <div class="sdc-cand">
+        ${candAvatarHtml(r.c)}
+        <div style="min-width:0;">
+          <div class="sdc-cand-name">${r.c.name}</div>
+          <div class="sdc-cand-party">${r.c.party}</div>
+        </div>
+      </div>
+      <div class="sdc-pct">${r.pct.toFixed(2)}%</div>
+      <div class="sdc-votes">${votes.toLocaleString("pt-BR")}</div>
+    </div>`;
+  }).join("");
+
+  let marginTxt = "";
+  if(rows.length >= 2){
+    const diffVotes = Math.round(countedVotes * ((rows[0].pct - rows[1].pct)/100));
+    marginTxt = ` · ${Math.abs(diffVotes).toLocaleString("pt-BR")} votos de diferença`;
+  }
+  document.getElementById("sdcFooter").innerHTML =
+    `Apurado: <b>${reporting}%</b>${marginTxt}` +
+    (lead && lead.projected ? `<span class="sdc-badge" style="background:${headerColor};color:#fff;">Projetado</span>` : "");
+
+  card.style.display = "flex";
+}
+
 function colorMap(){
   STATES.forEach(s=>{
     if(s.a === "DC") return;
@@ -888,6 +1023,7 @@ function colorMap(){
   dc.style.display = (activeRace === "president") ? "flex" : "none";
   if(activeRace === "president") dc.style.background = stateFillColor("DC");
   recolorCounties();
+  renderStateDetailCard();
 }
 
 function showTooltip(e, s){
@@ -901,7 +1037,7 @@ function showTooltip(e, s){
   const rows = getCandidates(activeRace, s.a)
     .map(c=>({c, pct: (calc.stateEffPct[c.id]||0)}))
     .sort((a,b)=>b.pct - a.pct)
-    .map(x=>`<div class="tt-row"><span class="tt-dot" style="background:${x.c.color}"></span><span class="tt-name">${x.c.name}</span><span class="tt-pct">${x.pct.toFixed(1)}%</span></div>`)
+    .map(x=>`<div class="tt-row"><span class="tt-dot" style="background:${x.c.color}"></span><span class="tt-name">${x.c.name}</span><span class="tt-pct">${x.pct.toFixed(2)}%</span></div>`)
     .join("");
   const labelEv = activeRace === "president" ? ` · ${s.ev} delegados` : "";
   const lead = leadingCandidate(activeRace, s.a);
@@ -981,8 +1117,8 @@ function renderBroadcastBoard(){
     const pop = computeNationalPopularVote();
     const fmtVotes = (n) => Math.round(n).toLocaleString("pt-BR");
     const pctOf = (id) => pop.totalCounted > 0 ? ((pop.totals[id]||0) / pop.totalCounted * 100) : 0;
-    popularHtml1 = `<div class="bb-popular">Voto popular: <b>${pctOf(c1.id).toFixed(1)}%</b> · ${fmtVotes(pop.totals[c1.id]||0)} votos</div>`;
-    popularHtml2 = `<div class="bb-popular">Voto popular: <b>${pctOf(c2.id).toFixed(1)}%</b> · ${fmtVotes(pop.totals[c2.id]||0)} votos</div>`;
+    popularHtml1 = `<div class="bb-popular">Voto popular: <b>${pctOf(c1.id).toFixed(2)}%</b> · ${fmtVotes(pop.totals[c1.id]||0)} votos</div>`;
+    popularHtml2 = `<div class="bb-popular">Voto popular: <b>${pctOf(c2.id).toFixed(2)}%</b> · ${fmtVotes(pop.totals[c2.id]||0)} votos</div>`;
   }
 
   bbTop.innerHTML = `
@@ -1081,7 +1217,7 @@ function renderStateEffSummary(){
   const abbr = document.getElementById("stateSelect").value;
   const calc = getStateCalculation(abbr);
   const candidates = getCandidates(activeRace, abbr);
-  const items = candidates.map(c => `<b>${c.name}:</b> ${(calc.stateEffPct[c.id]||0).toFixed(1)}%`).join(" &nbsp;·&nbsp; ");
+  const items = candidates.map(c => `<b>${c.name}:</b> ${(calc.stateEffPct[c.id]||0).toFixed(2)}%`).join(" &nbsp;·&nbsp; ");
   document.getElementById("stateEffSummary").innerHTML = `
     <div style="color:var(--text-dim);font-size:10px;text-transform:uppercase;font-weight:800;margin-bottom:3px;">Média Estadual Efetiva</div>
     <div style="font-size:13px;">${items} &nbsp;(<span style="color:var(--text-dim)">${calc.stateEffReporting}% apurado</span>)</div>
@@ -1141,7 +1277,7 @@ function onCountySelectChange(){
       <label style="display:flex;align-items:center;gap:6px;">
         <span class="legend-swatch" style="width:10px;height:10px;background:${c.color}"></span>${c.name}
       </label>
-      <input type="number" min="0" max="100" step="0.1" data-cand="${c.id}" class="county-pct-input" value="${(cData.pct[c.id]||0).toFixed(1)}">`;
+      <input type="number" min="0" max="100" step="0.01" data-cand="${c.id}" class="county-pct-input" value="${(cData.pct[c.id]||0).toFixed(2)}">`;
     el.appendChild(row);
   });
 }
@@ -1168,7 +1304,7 @@ function renderStatePctEditor(){
       <label style="display:flex;align-items:center;gap:6px;">
         <span class="legend-swatch" style="width:10px;height:10px;background:${c.color}"></span>${c.name}
       </label>
-      <input type="number" min="0" max="100" step="0.1" data-cand="${c.id}" class="pct-input" value="${(st.pct[c.id]||0)}">`;
+      <input type="number" min="0" max="100" step="0.01" data-cand="${c.id}" class="pct-input" value="${(st.pct[c.id]||0)}">`;
     el.appendChild(row);
   });
 }
