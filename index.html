@@ -227,6 +227,14 @@
     padding:2px 7px;border-radius:20px;margin-left:6px;}
   @media (max-width:640px){ .state-detail-card{width:calc(100% - 20px); right:10px; left:10px;} }
 
+  .map-with-side{display:flex;gap:16px;align-items:stretch;}
+  .map-with-side .map-container{flex:1;min-width:0;}
+  .gauge-sidebar{width:230px;flex-shrink:0;display:flex;flex-direction:column;gap:12px;}
+  @media (max-width:860px){
+    .map-with-side{flex-direction:column;}
+    .gauge-sidebar{width:100%;flex-direction:row;flex-wrap:wrap;}
+    .gauge-sidebar .gauge-card{flex:1 1 220px;}
+  }
   .ticker{margin-top:18px;border-top:1px solid var(--line);padding-top:14px;display:grid;
     grid-template-columns:repeat(auto-fill, minmax(168px, 1fr));gap:10px;align-items:stretch;}
   .tk-empty{font-size:12px;color:var(--text-dim);font-style:italic;grid-column:1/-1;}
@@ -238,7 +246,7 @@
   .tk-top{display:flex;align-items:center;}
   .tk-time{font-family:var(--font-mono);font-size:10px;font-weight:800;color:var(--text-dim);}
   .tk-msg{font-size:12px;color:var(--text-hi);font-weight:700;line-height:1.35;
-    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+    display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
   .tk-item.tk-projected{border-top-color:var(--green-eleito);}
   .tk-item.tk-unproject{border-top-color:#94A3B8;}
   .tk-item.tk-reporting{border-top-color:var(--blue-dem);}
@@ -247,6 +255,19 @@
   .tk-item.tk-reset{border-top-color:var(--red-rep);}
   .tk-item.tk-analyst{border-top-color:var(--navy-head);}
   @media (max-width:520px){ .ticker{grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));} }
+
+  /* Termômetro / gauge de previsão */
+  .gauge-card{background:#FFFFFF;border:1px solid var(--line);border-radius:var(--radius-md);
+    padding:14px 14px 12px;box-shadow:var(--shadow-sm);text-align:center;}
+  .gauge-title{font-size:10.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+    color:var(--text-dim);margin-bottom:2px;}
+  .gauge-svg{width:100%;height:auto;display:block;margin:2px auto -6px;}
+  .gauge-labels{display:flex;justify-content:space-between;font-size:10.5px;font-weight:800;
+    padding:0 4px;margin-top:2px;}
+  .gauge-verdict{font-size:12.5px;font-weight:700;color:var(--text-hi);margin-top:8px;
+    padding-top:9px;border-top:1px solid var(--line-soft);line-height:1.4;}
+  .gauge-verdict b{font-weight:800;}
+  .gauge-empty{font-size:11.5px;color:var(--text-dim);font-style:italic;padding:10px 4px;}
 
   /* Cartão de comentário do analista (estilo "análise da redação") */
   .analyst-box{margin-top:18px;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--line);
@@ -349,28 +370,31 @@
       <span id="mapTitle">Mapa Interativo por Estado</span>
       <span style="color:var(--text-dim);font-weight:600;letter-spacing:0;font-size:11px;">passe o mouse para detalhes · clique num estado ou condado</span>
     </div>
-    <div class="map-container" id="mapContainer">
-      <div class="map-loading" id="mapLoading">Carregando mapa…</div>
-      <svg id="mapSvg" viewBox="0 0 960 600" preserveAspectRatio="xMidYMid meet"></svg>
-      <div class="dc-tile" id="dcTile" title="Distrito de Columbia">DC</div>
-      <div class="zoom-controls">
-        <button class="zoom-btn" id="zoomInBtn" title="Aproximar">+</button>
-        <button class="zoom-btn" id="zoomOutBtn" title="Afastar">−</button>
-        <button class="zoom-btn reset" id="zoomResetBtn" title="Ver mapa completo">Tudo</button>
-      </div>
-      <div class="state-detail-card" id="stateDetailCard" style="display:none;">
-        <button class="sdc-close" id="sdcCloseBtn" title="Fechar">×</button>
-        <div class="sdc-header" id="sdcHeader">
-          <div class="sdc-tags" id="sdcTags"></div>
-          <div class="sdc-title" id="sdcTitle"></div>
-          <div class="sdc-sub" id="sdcSub"></div>
+    <div class="map-with-side">
+      <div class="map-container" id="mapContainer">
+        <div class="map-loading" id="mapLoading">Carregando mapa…</div>
+        <svg id="mapSvg" viewBox="0 0 960 600" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="dc-tile" id="dcTile" title="Distrito de Columbia">DC</div>
+        <div class="zoom-controls">
+          <button class="zoom-btn" id="zoomInBtn" title="Aproximar">+</button>
+          <button class="zoom-btn" id="zoomOutBtn" title="Afastar">−</button>
+          <button class="zoom-btn reset" id="zoomResetBtn" title="Ver mapa completo">Tudo</button>
         </div>
-        <div class="sdc-body">
-          <div class="sdc-colheads"><span>Candidato</span><span style="text-align:right;">%</span><span style="text-align:right;">Votos</span></div>
-          <div id="sdcTable"></div>
+        <div class="state-detail-card" id="stateDetailCard" style="display:none;">
+          <button class="sdc-close" id="sdcCloseBtn" title="Fechar">×</button>
+          <div class="sdc-header" id="sdcHeader">
+            <div class="sdc-tags" id="sdcTags"></div>
+            <div class="sdc-title" id="sdcTitle"></div>
+            <div class="sdc-sub" id="sdcSub"></div>
+          </div>
+          <div class="sdc-body">
+            <div class="sdc-colheads"><span>Candidato</span><span style="text-align:right;">%</span><span style="text-align:right;">Votos</span></div>
+            <div id="sdcTable"></div>
+          </div>
+          <div class="sdc-footer" id="sdcFooter"></div>
         </div>
-        <div class="sdc-footer" id="sdcFooter"></div>
       </div>
+      <div class="gauge-sidebar" id="gaugeSidebar"></div>
     </div>
     <div class="ticker" id="ticker"></div>
     <div class="analyst-box" id="analystBox" style="display:none;"></div>
@@ -409,10 +433,31 @@
 
     <hr class="divider">
 
-    <div class="subhead">Editar candidatos desta disputa <span id="candEditorScope" style="color:var(--text-dim);font-weight:600;text-transform:none;letter-spacing:0;"></span></div>
-    <div id="candEditor"></div>
-    <button class="add-btn" id="addCandBtn">+ Adicionar novo candidato</button>
-    <button class="save-btn secondary" id="saveCandidatesBtn">Salvar candidatos</button>
+    <div class="subhead-row" id="candSectionToggle">
+      <span class="subhead" style="margin:0;">Editar candidatos desta disputa <span id="candEditorScope" style="color:var(--text-dim);font-weight:600;text-transform:none;letter-spacing:0;"></span></span>
+      <span class="collapse-caret" id="candCaret">▸</span>
+    </div>
+    <div id="candSectionBody" style="display:none;margin-top:12px;">
+      <div id="candEditor"></div>
+      <button class="add-btn" id="addCandBtn">+ Adicionar novo candidato</button>
+      <button class="save-btn secondary" id="saveCandidatesBtn">Salvar candidatos</button>
+    </div>
+
+    <hr class="divider">
+
+    <div class="subhead-row" id="gaugeSectionToggle">
+      <span class="subhead" style="margin:0;">Termômetro da corrida <span style="color:var(--text-dim);font-weight:600;text-transform:none;letter-spacing:0;">(aparece pros espectadores)</span></span>
+      <span class="collapse-caret" id="gaugeCaret">▸</span>
+    </div>
+    <div id="gaugeAdminBody" style="display:none;margin-top:12px;">
+      <div class="hint" id="gaugeAdminHint" style="margin-top:0;margin-bottom:10px;"></div>
+      <div id="gaugeProbInputs"></div>
+      <div id="gaugeEvBlock" style="display:none;">
+        <div class="subhead" style="font-size:11px;margin:14px 0 8px;">Estimativa do Colégio Eleitoral</div>
+        <div id="gaugeEvInputs"></div>
+      </div>
+      <button class="save-btn" id="saveGaugeBtn" style="width:100%;">Salvar termômetro</button>
+    </div>
 
     <hr class="divider">
 
@@ -808,6 +853,23 @@ function getCandidates(raceKey, abbr){
   return race.states[abbr].candidates;
 }
 
+// Termômetro da corrida: presidencial é nacional (um só, na disputa inteira);
+// senado/governador é por estado (cada estado tem o seu, como os candidatos).
+function getForecast(raceKey, abbr){
+  if(raceKey === "president"){
+    const race = data.races.president;
+    if(!race.forecast) race.forecast = {prob:{}, ev:{}};
+    if(!race.forecast.prob) race.forecast.prob = {};
+    if(!race.forecast.ev) race.forecast.ev = {};
+    return race.forecast;
+  }
+  const race = data.races[raceKey];
+  if(!race.states[abbr]) race.states[abbr] = {reporting:0, pct:{}, counties:{}, candidates: defaultStateCandidates()};
+  if(!race.states[abbr].forecast) race.states[abbr].forecast = {prob:{}};
+  if(!race.states[abbr].forecast.prob) race.states[abbr].forecast.prob = {};
+  return race.states[abbr].forecast;
+}
+
 let data = null;
 let activeYear = null;
 let rootCache = null;
@@ -1137,6 +1199,7 @@ function candAvatarHtml(c){
 }
 
 function renderStateDetailCard(){
+  renderGaugeSidebar();
   const card = document.getElementById("stateDetailCard");
   if(!detailStateAbbr){ card.style.display = "none"; return; }
   const abbr = detailStateAbbr;
@@ -1359,6 +1422,188 @@ function renderTicker(){
   }).join("");
 }
 
+// ---- Termômetro da corrida (gauge estilo NYT/CNN) ----
+function buildGaugeSVG(pctB, colorA, colorB){
+  const W = 220, H = 118, cx = W/2, cy = 100, innerR = 56, outerR = 80, needleLen = 64;
+  const leftPath = d3.arc().innerRadius(innerR).outerRadius(outerR).startAngle(-Math.PI/2).endAngle(0)();
+  const rightPath = d3.arc().innerRadius(innerR).outerRadius(outerR).startAngle(0).endAngle(Math.PI/2)();
+  const pct = Math.max(0, Math.min(100, pctB));
+  const angle = -Math.PI/2 + (pct/100)*Math.PI;
+  const nx = cx + needleLen*Math.sin(angle);
+  const ny = cy - needleLen*Math.cos(angle);
+  return `<svg viewBox="0 0 ${W} ${H}" class="gauge-svg">
+    <g transform="translate(${cx},${cy})">
+      <path d="${leftPath}" fill="${colorA}" opacity="0.85"></path>
+      <path d="${rightPath}" fill="${colorB}" opacity="0.85"></path>
+    </g>
+    <line x1="${cx}" y1="${cy}" x2="${nx}" y2="${ny}" stroke="#0B1220" stroke-width="4" stroke-linecap="round"></line>
+    <circle cx="${cx}" cy="${cy}" r="6.5" fill="#0B1220"></circle>
+  </svg>`;
+}
+
+function firstName(name){ return (name||"").trim().split(/\s+/)[0] || name; }
+
+function renderGaugeSidebar(){
+  const el = document.getElementById("gaugeSidebar");
+  if(!el || !data) return;
+  const isPres = activeRace === "president";
+  let candidates, forecast, contextLabel = "";
+
+  if(isPres){
+    candidates = data.races.president.candidates;
+    forecast = getForecast("president", null);
+  } else {
+    const abbr = detailStateAbbr;
+    if(!abbr || (RACE_NO_DC[activeRace] && abbr === "DC")){
+      el.innerHTML = `<div class="gauge-card"><div class="gauge-title">Termômetro da Corrida</div>
+        <div class="gauge-empty">Clique num estado no mapa pra ver a previsão daquela disputa.</div></div>`;
+      return;
+    }
+    candidates = getCandidates(activeRace, abbr);
+    forecast = getForecast(activeRace, abbr);
+    contextLabel = " · " + (STATE_BY_ABBR[abbr] ? STATE_BY_ABBR[abbr].n : abbr);
+  }
+
+  if(!candidates || candidates.length < 2){
+    el.innerHTML = `<div class="gauge-card"><div class="gauge-title">Termômetro da Corrida</div>
+      <div class="gauge-empty">Cadastre ao menos 2 candidatos pra ver a previsão.</div></div>`;
+    return;
+  }
+
+  const cA = candidates[0], cB = candidates[1];
+  const probA = (forecast.prob[cA.id] !== undefined) ? forecast.prob[cA.id] : 50;
+  const probB = (forecast.prob[cB.id] !== undefined) ? forecast.prob[cB.id] : 50;
+  const sumProb = probA + probB;
+  const pctBGauge = sumProb > 0 ? (probB/sumProb*100) : 50;
+
+  let verdictHtml;
+  if(Math.abs(probA - probB) < 4){
+    verdictHtml = `Disputa em aberto — <b>empate técnico</b> entre ${cA.name} e ${cB.name}.`;
+  } else {
+    const favored = probA > probB ? cA : cB;
+    verdictHtml = `<b>${favored.name}</b> é favorito(a) para vencer esta disputa.`;
+  }
+
+  let evCardHtml = "";
+  if(isPres){
+    const evA = (forecast.ev[cA.id] !== undefined) ? forecast.ev[cA.id] : 269;
+    const evB = (forecast.ev[cB.id] !== undefined) ? forecast.ev[cB.id] : 269;
+    const evTotal = (evA + evB) || 1;
+    const pctBEv = (evB/evTotal*100);
+    evCardHtml = `
+      <div class="gauge-card">
+        <div class="gauge-title">Estimativa do Colégio Eleitoral</div>
+        ${buildGaugeSVG(pctBEv, cA.color, cB.color)}
+        <div class="gauge-labels">
+          <span style="color:${cA.color}">${firstName(cA.name)} ${evA}</span>
+          <span style="color:${cB.color}">${evB} ${firstName(cB.name)}</span>
+        </div>
+      </div>`;
+  }
+
+  el.innerHTML = `
+    <div class="gauge-card">
+      <div class="gauge-title">Chance de Vitória${contextLabel}</div>
+      ${buildGaugeSVG(pctBGauge, cA.color, cB.color)}
+      <div class="gauge-labels">
+        <span style="color:${cA.color}">${firstName(cA.name)} ${probA.toFixed(0)}%</span>
+        <span style="color:${cB.color}">${probB.toFixed(0)}% ${firstName(cB.name)}</span>
+      </div>
+      <div class="gauge-verdict">${verdictHtml}</div>
+    </div>
+    ${evCardHtml}
+  `;
+}
+
+function renderGaugeAdminBody(){
+  const hint = document.getElementById("gaugeAdminHint");
+  const probEl = document.getElementById("gaugeProbInputs");
+  const evBlock = document.getElementById("gaugeEvBlock");
+  const evEl = document.getElementById("gaugeEvInputs");
+  if(!hint || !probEl) return;
+
+  const isPres = activeRace === "president";
+  let candidates, forecast, abbr = null;
+
+  if(isPres){
+    candidates = data.races.president.candidates;
+    forecast = getForecast("president", null);
+    hint.textContent = "Vale pro país inteiro — aparece na aba Presidencial pra todo mundo.";
+  } else {
+    abbr = document.getElementById("stateSelect").value;
+    candidates = getCandidates(activeRace, abbr);
+    forecast = getForecast(activeRace, abbr);
+    hint.textContent = `Vale só pra ${STATE_BY_ABBR[abbr] ? STATE_BY_ABBR[abbr].n : abbr} — aparece quando alguém clicar nesse estado no mapa.`;
+  }
+
+  if(!candidates || candidates.length < 2){
+    probEl.innerHTML = `<div class="hint">Cadastre ao menos 2 candidatos nesta disputa primeiro.</div>`;
+    evBlock.style.display = "none";
+    return;
+  }
+  const cA = candidates[0], cB = candidates[1];
+
+  probEl.innerHTML = [cA, cB].map(c=>{
+    const val = (forecast.prob[c.id] !== undefined) ? forecast.prob[c.id] : 50;
+    return `<div class="field-row">
+      <label style="display:flex;align-items:center;gap:6px;">
+        <span class="legend-swatch" style="width:10px;height:10px;background:${c.color}"></span>${firstName(c.name)}
+      </label>
+      <input type="number" min="0" max="100" step="1" class="gauge-prob-input" data-cand="${c.id}" value="${val}">
+    </div>`;
+  }).join("");
+
+  if(isPres){
+    evBlock.style.display = "block";
+    evEl.innerHTML = [cA, cB].map(c=>{
+      const val = (forecast.ev[c.id] !== undefined) ? forecast.ev[c.id] : 269;
+      return `<div class="field-row">
+        <label style="display:flex;align-items:center;gap:6px;">
+          <span class="legend-swatch" style="width:10px;height:10px;background:${c.color}"></span>${firstName(c.name)}
+        </label>
+        <input type="number" min="0" max="538" step="1" class="gauge-ev-input" data-cand="${c.id}" value="${val}">
+      </div>`;
+    }).join("");
+  } else {
+    evBlock.style.display = "none";
+  }
+}
+
+document.getElementById("candSectionToggle").addEventListener("click", ()=>{
+  const body = document.getElementById("candSectionBody");
+  const caret = document.getElementById("candCaret");
+  const open = body.style.display !== "none";
+  body.style.display = open ? "none" : "block";
+  caret.classList.toggle("open", !open);
+});
+
+document.getElementById("gaugeSectionToggle").addEventListener("click", ()=>{
+  const body = document.getElementById("gaugeAdminBody");
+  const caret = document.getElementById("gaugeCaret");
+  const open = body.style.display !== "none";
+  body.style.display = open ? "none" : "block";
+  caret.classList.toggle("open", !open);
+  if(!open) renderGaugeAdminBody();
+});
+
+document.getElementById("saveGaugeBtn").addEventListener("click", async ()=>{
+  const isPres = activeRace === "president";
+  const abbr = isPres ? null : document.getElementById("stateSelect").value;
+  const forecast = getForecast(activeRace, abbr);
+  document.querySelectorAll(".gauge-prob-input").forEach(inp=>{
+    forecast.prob[inp.dataset.cand] = Math.max(0, Math.min(100, parseFloat(inp.value) || 0));
+  });
+  if(isPres){
+    document.querySelectorAll(".gauge-ev-input").forEach(inp=>{
+      forecast.ev[inp.dataset.cand] = Math.max(0, Math.min(538, parseInt(inp.value) || 0));
+    });
+  }
+  const label = isPres ? "nacional (Presidencial)" : `de ${STATE_BY_ABBR[abbr] ? STATE_BY_ABBR[abbr].n : abbr} (${RACE_LABELS[activeRace]})`;
+  await persist(`Termômetro ${label} atualizado`, "info");
+  renderGaugeSidebar();
+  showToast("Termômetro salvo.");
+});
+
 function renderAnalystBox(){
   const box = document.getElementById("analystBox");
   const c = data.commentary;
@@ -1493,6 +1738,8 @@ function renderStateEffSummary(){
 
 async function onStateSelectChange(){
   renderCandEditor(); renderStatePctEditor(); renderStateEffSummary(); renderProjectBox();
+  const gaugeBody = document.getElementById("gaugeAdminBody");
+  if(gaugeBody && gaugeBody.style.display !== "none") renderGaugeAdminBody();
   const abbr = document.getElementById("stateSelect").value;
   await ensureCountiesLoaded();
   const fipsPrefix = ABBR_TO_FIPS[abbr];
@@ -1725,7 +1972,11 @@ async function renderAll(){
   renderTicker();
   renderAnalystBox();
   document.getElementById("updatedAt").textContent = fmtTime(data.meta.updatedAt);
-  if(isAdmin){ renderStateSelect(); renderAnalystAdminFields(); }
+  if(isAdmin){
+    renderStateSelect(); renderAnalystAdminFields();
+    const gaugeBody = document.getElementById("gaugeAdminBody");
+    if(gaugeBody && gaugeBody.style.display !== "none") renderGaugeAdminBody();
+  }
 }
 
 document.getElementById("adminToggle").addEventListener("click", ()=>{
