@@ -49,7 +49,7 @@
   body{background-image:radial-gradient(circle at 12% 0%, rgba(37,99,235,.05), transparent 42%),
     radial-gradient(circle at 88% 8%, rgba(220,38,38,.045), transparent 40%);
     background-attachment:fixed;}
-  .wrap{max-width:1280px;margin:0 auto;padding:0 20px 64px;}
+  .wrap{max-width:1600px;margin:0 auto;padding:0 24px 64px;}
   ::selection{background:rgba(37,99,235,.22);}
 
   .masthead{
@@ -62,7 +62,7 @@
   #configWarning{display:none;background:#7C2D12;color:#FFEDD5;font-size:13px;font-weight:700;
     padding:10px 20px;text-align:center;border-bottom:2px solid #EA580C;}
   #configWarning code{background:rgba(0,0,0,.25);padding:1px 6px;border-radius:3px;font-family:var(--font-mono);}
-  .masthead-inner{max-width:1280px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+  .masthead-inner{max-width:1600px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;}
   .brand-eyebrow{font-size:11px;letter-spacing:2.8px;color:#93C5FD;font-weight:800;text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-bottom:5px;}
   .live-dot{width:8px;height:8px;border-radius:50%;background:#FF5252;box-shadow:0 0 0 0 rgba(255,82,82,.6);animation:pulse 1.8s infinite;}
   @keyframes pulse{
@@ -102,7 +102,9 @@
   .year-icon-btn.danger:hover{background:#FEE2E2;color:var(--red-rep);}
   .year-tag{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;
     background:var(--green-eleito);color:#fff;padding:2px 6px;border-radius:3px;white-space:nowrap;}
-  .year-create{display:flex;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);}
+  .year-create{display:flex;flex-direction:column;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);}
+  .year-create select{padding:6px 8px;border:1px solid var(--line);border-radius:var(--radius-sm);font-size:11.5px;background:#fff;color:var(--text-hi);}
+  .year-create-row{display:flex;gap:6px;}
   .year-create input{flex:1;padding:6px 8px;border:1px solid var(--line);border-radius:var(--radius-sm);font-size:12px;}
   .year-create button{background:var(--navy-head);color:#fff;border:none;padding:6px 12px;
     border-radius:var(--radius-sm);font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;transition:filter .15s ease;}
@@ -338,8 +340,14 @@
           <div class="year-dropdown-title">Eleições salvas</div>
           <div class="year-list" id="yearList"></div>
           <div class="year-create" id="yearCreateBox" style="display:none;">
-            <input type="text" id="newYearInput" placeholder="Ex: 2028">
-            <button id="createYearBtn">Criar</button>
+            <select id="newYearMode">
+              <option value="full">Eleição completa (Pres. + Senado + Gov.)</option>
+              <option value="governor">Eleição especial — só Governador</option>
+            </select>
+            <div class="year-create-row">
+              <input type="text" id="newYearInput" placeholder="Ex: 2028">
+              <button id="createYearBtn">Criar</button>
+            </div>
           </div>
         </div>
       </div>
@@ -831,13 +839,22 @@ function defaultRace(national){
   });
   return {candidates: national ? defaultCandidates() : [], states};
 }
-function defaultData(){
+function defaultData(mode){
   return {
-    meta:{title:"ELECTION CENTER", updatedAt:null},
+    meta:{title:"ELECTION CENTER", updatedAt:null, mode: mode || "full"},
     races:{president:defaultRace(true), senate:defaultRace(false), governor:defaultRace(false)},
     log:[],
     commentary:null
   };
+}
+
+// Em anos "só governador" (eleição especial), esconde as abas de Presidencial
+// e Senado — só existe a disputa de Governador.
+function visibleRaceKeys(){
+  return (data && data.meta && data.meta.mode === "governor") ? ["governor"] : RACE_KEYS;
+}
+function applyYearMode(){
+  if(data && data.meta && data.meta.mode === "governor") activeRace = "governor";
 }
 
 // Presidencial usa uma lista de candidatos nacional (race.candidates).
@@ -891,6 +908,7 @@ async function loadData(){
   if(!firebaseReady){
     activeYear = String(new Date().getFullYear());
     data = defaultData();
+    applyYearMode();
     showConfigWarning();
     return;
   }
@@ -917,10 +935,12 @@ async function loadData(){
     const years = Object.keys(root.years).sort();
     activeYear = (root.currentYear && root.years[root.currentYear]) ? root.currentYear : years[years.length - 1];
     data = root.years[activeYear];
+    applyYearMode();
   }catch(e){
     console.error("Falha ao carregar dados:", e);
     activeYear = String(new Date().getFullYear());
     data = defaultData();
+    applyYearMode();
   }
 }
 
@@ -991,7 +1011,7 @@ function leadingCandidate(raceKey, abbr){
 function renderTabs(){
   const tabs = document.getElementById("tabs");
   tabs.innerHTML = "";
-  RACE_KEYS.forEach(k=>{
+  visibleRaceKeys().forEach(k=>{
     const b = document.createElement("button");
     b.className = "tab" + (k===activeRace ? " active":"");
     b.textContent = RACE_LABELS[k];
@@ -1916,6 +1936,7 @@ function switchYear(y){
   if(y === activeYear){ closeYearDropdown(); return; }
   activeYear = y;
   data = rootCache.years[y];
+  applyYearMode();
   clearCalculationCache();
   closeYearDropdown();
   renderYearSelector();
@@ -1924,11 +1945,13 @@ function switchYear(y){
 
 async function createNewYear(){
   const input = document.getElementById("newYearInput");
+  const modeSel = document.getElementById("newYearMode");
   const label = (input.value || "").trim();
+  const mode = modeSel ? modeSel.value : "full";
   if(!label){ showToast("Digite um nome/ano para a nova eleição."); return; }
   if(!rootCache) rootCache = { currentYear: activeYear, years: { [activeYear]: data } };
   if(rootCache.years[label]){ showToast("Já existe uma eleição salva com esse nome."); return; }
-  const blob = defaultData();
+  const blob = defaultData(mode);
   if(!firebaseReady){ showConfigWarning(); return; }
   try{
     await dbRef.child("years").child(label).set(blob);
@@ -1939,10 +1962,12 @@ async function createNewYear(){
   activeYear = label;
   data = blob;
   activeRace = "president";
+  applyYearMode();
   clearCounties();
   detailStateAbbr = null;
   clearCalculationCache();
   input.value = "";
+  if(modeSel) modeSel.value = "full";
   closeYearDropdown();
   renderYearSelector();
   await renderAll();
@@ -1992,9 +2017,11 @@ document.getElementById("countySelect").addEventListener("change", onCountySelec
 document.getElementById("resetAllBtn").addEventListener("click", async ()=>{
   const conf = window.prompt('Isso apaga TODOS os resultados (Presidencial, Senado e Governador) para todo mundo, agora mesmo. Para confirmar, digite RESETAR:');
   if(conf !== "RESETAR"){ showToast("Reset cancelado."); return; }
-  data = defaultData();
+  const currentMode = (data.meta && data.meta.mode) || "full";
+  data = defaultData(currentMode);
   await persist("Reset geral — todos os dados foram apagados pelo administrador", "reset");
   activeRace = "president";
+  applyYearMode();
   clearCounties();
   await renderAll();
   showToast("Todos os dados foram resetados.");
@@ -2103,6 +2130,7 @@ function pollLoop(){
     const fresh = root.years[activeYear];
     if(fresh && (!data || fresh.meta.updatedAt !== data.meta.updatedAt)){
       data = fresh;
+      applyYearMode();
       clearCalculationCache();
       renderAll();
     }
