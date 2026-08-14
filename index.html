@@ -471,6 +471,73 @@
   .map-with-side{display:block;}
   .map-with-side .map-container{width:100%;min-width:0;aspect-ratio:16/8.5;}
   @media (max-width:860px){.map-with-side{display:block;}.map-with-side .map-container{aspect-ratio:16/9;}}
+
+
+  /* ========================================================================
+     CONGRESSISTA — PROJEÇÃO DA CÂMARA / HEMICICLO
+     ======================================================================== */
+  .seat-chart-panel{display:none;padding:0;overflow:hidden;}
+  .chamber-shell{background:linear-gradient(180deg,#FFFFFF 0%,#F8FAFC 100%);}
+  .chamber-topbar{background:linear-gradient(125deg,#071426,var(--navy-head) 56%,var(--navy-sub));color:#fff;padding:16px 20px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .chamber-eyebrow{font-size:9px;font-weight:900;letter-spacing:1.55px;text-transform:uppercase;color:#93C5FD;margin-bottom:3px;}
+  .chamber-title{font-family:var(--font-display);font-size:27px;font-weight:900;text-transform:uppercase;line-height:1;color:#fff;letter-spacing:.2px;}
+  .chamber-topnote{font-size:10px;font-weight:800;color:#AFC0D8;text-transform:uppercase;letter-spacing:.55px;text-align:right;}
+  .chamber-content{padding:18px 20px 20px;}
+  .chamber-scoreboard{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-bottom:14px;}
+  .chamber-score{position:relative;overflow:hidden;border:1px solid var(--line);background:#fff;border-radius:var(--radius-md);padding:12px 14px;box-shadow:var(--shadow-sm);}
+  .chamber-score::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--ch-color,#94A3B8);}
+  .chamber-score-label{font-size:9px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);}
+  .chamber-score-value{font-family:var(--font-display);font-size:39px;line-height:1;color:var(--navy-head);font-weight:900;margin-top:4px;}
+  .chamber-score-sub{font-size:10px;color:var(--text-mid);font-weight:750;margin-top:3px;}
+  .chamber-meta{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:13px;}
+  .chamber-balance-wrap{display:flex;align-items:center;gap:9px;min-width:0;}
+  .chamber-balance-label{font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:var(--text-dim);white-space:nowrap;}
+  .chamber-balance{width:245px;max-width:38vw;height:9px;border-radius:999px;background:#E5EAF1;overflow:hidden;display:flex;box-shadow:inset 0 1px 3px rgba(15,23,42,.10);}
+  .chamber-balance span{height:100%;display:block;}
+  .chamber-callout{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 11px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:var(--navy-head);box-shadow:var(--shadow-sm);}
+  .chamber-stage{position:relative;border:1px solid var(--line-strong);border-radius:var(--radius-lg);background:radial-gradient(circle at 50% 4%,rgba(37,99,235,.07),transparent 34%),radial-gradient(circle at 50% 4%,rgba(220,38,38,.045),transparent 40%),linear-gradient(180deg,#FBFDFF,#F2F6FA);padding:8px 10px 13px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.8);}
+  .chamber-svg{width:100%;height:auto;display:block;max-width:1000px;margin:0 auto;filter:drop-shadow(0 8px 18px rgba(10,25,48,.07));}
+  .chamber-seat{transition:opacity .15s ease;shape-rendering:geometricPrecision;}
+  .chamber-seat:hover{opacity:.72;}
+  .chamber-centerline{stroke:#334155;stroke-width:2;stroke-dasharray:5 5;opacity:.86;}
+  .chamber-centertext{font-family:var(--font-ui);font-size:11px;font-weight:900;fill:#334155;letter-spacing:.8px;}
+  .chamber-dais{fill:#E2E8F0;stroke:#CBD5E1;stroke-width:1.5;}
+  .chamber-total{font-family:var(--font-display);font-size:39px;font-weight:900;fill:var(--navy-head);}
+  .chamber-total-label{font-family:var(--font-ui);font-size:10px;font-weight:900;letter-spacing:.9px;fill:#64748B;}
+  .chamber-majority-pill{display:flex;justify-content:center;margin-top:-2px;position:relative;z-index:2;}
+  .chamber-majority-pill span{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:10px;font-weight:900;color:var(--navy-head);text-transform:uppercase;letter-spacing:.65px;box-shadow:var(--shadow-sm);}
+  .chamber-legend{display:flex;justify-content:center;gap:17px;flex-wrap:wrap;margin-top:12px;}
+  .chamber-legend-item{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:800;color:var(--text-mid);}
+  .chamber-legend-dot{width:10px;height:10px;border-radius:50%;}
+  .chamber-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:9.5px;color:var(--text-dim);font-weight:700;}
+  .chamber-feed{margin-top:15px;border-top:1px solid var(--line);padding-top:13px;}
+  .chamber-feed-title{font-size:9px;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;}
+  .chamber-feed-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;}
+  .chamber-feed-card{border:1px solid var(--line-soft);border-left:4px solid var(--cf-color,#94A3B8);background:#fff;border-radius:8px;padding:8px 9px;min-width:0;box-shadow:var(--shadow-sm);}
+  .chamber-feed-state{font-family:var(--font-display);font-size:17px;font-weight:900;line-height:1;color:var(--navy-head);}
+  .chamber-feed-name{font-size:10px;font-weight:850;color:var(--text-hi);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .chamber-feed-party{font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:var(--text-dim);margin-top:2px;}
+  .chamber-empty{grid-column:1/-1;padding:14px;text-align:center;color:var(--text-dim);font-size:10.5px;font-style:italic;}
+  @media(max-width:1000px){.chamber-feed-grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
+  @media(max-width:700px){
+    .chamber-scoreboard{grid-template-columns:1fr;}
+    .chamber-balance{max-width:58vw;width:190px;}
+    .chamber-feed-grid{grid-template-columns:1fr 1fr;}
+    .chamber-title{font-size:23px;}
+    .chamber-topnote{display:none;}
+  }
+  @media(max-width:460px){.chamber-feed-grid{grid-template-columns:1fr;}}
+
+  .congress-admin-box{border:1px solid var(--line);background:#fff;border-radius:var(--radius-md);padding:15px 16px;box-shadow:var(--shadow-sm);}
+  .congress-admin-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px;}
+  .congress-admin-stat{border:1px solid var(--line);border-top:4px solid var(--ca-color,#94A3B8);border-radius:10px;padding:10px 11px;background:linear-gradient(180deg,#fff,#F8FAFC);}
+  .congress-admin-stat label{display:block;font-size:10px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;}
+  .congress-admin-stat input{font-family:var(--font-display);font-size:25px;font-weight:900;text-align:center;padding:7px 8px;}
+  .congress-admin-remaining{font-family:var(--font-display);font-size:30px;font-weight:900;color:var(--navy-head);line-height:1.15;text-align:center;padding:7px 4px;}
+  .congress-admin-remaining small{display:block;font-family:var(--font-ui);font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:var(--text-dim);margin-top:2px;}
+  .congress-admin-warning{display:none;margin-top:9px;color:#B91C1C;font-size:11px;font-weight:800;}
+  @media(max-width:700px){.congress-admin-grid{grid-template-columns:1fr;}}
+
 </style>
 </head>
 <body>
@@ -488,7 +555,7 @@
           <div class="year-list" id="yearList"></div>
           <div class="year-create" id="yearCreateBox" style="display:none;">
             <select id="newYearMode">
-              <option value="full">Eleição completa (Pres. + Senado + Gov.)</option>
+              <option value="full">Eleição completa (Pres. + Congressista + Gov.)</option>
               <option value="governor">Eleição especial — só Governador</option>
             </select>
             <div class="year-create-row">
@@ -521,7 +588,7 @@
     <div class="road270" id="roadTo270"></div>
   </div>
 
-  <!-- CONTROLE PARTIDÁRIO — Senado / Governadores -->
+  <!-- CONTROLE PARTIDÁRIO — Congressista / Governadores -->
   <div class="panel race-control-panel" id="raceControlPanel" style="display:none;"></div>
 
   <!-- ESTADOS DECISIVOS — automático, somente Presidencial -->
@@ -553,7 +620,7 @@
   </div>
 
   <!-- MAPA PRINCIPAL — LARGURA TOTAL -->
-  <div class="panel">
+  <div class="panel" id="mapPanel">
     <div class="panel-title">
       <span id="mapTitle">Mapa Interativo por Estado</span>
       <span style="color:var(--text-dim);font-weight:600;letter-spacing:0;font-size:11px;">passe o mouse para detalhes · clique num estado ou condado</span>
@@ -584,6 +651,28 @@
       </div>
     </div>
     <div class="analyst-box" id="analystBox" style="display:none;"></div>
+  </div>
+
+  <div class="panel seat-chart-panel" id="seatChartPanel" style="display:none;">
+    <div class="chamber-shell">
+      <div class="chamber-topbar">
+        <div><div class="chamber-eyebrow">Election Center · Congressista</div><div class="chamber-title">Projeção da Câmara</div></div>
+        <div class="chamber-topnote" id="chamberTopNote">270 cadeiras para maioria · 538 no total</div>
+      </div>
+      <div class="chamber-content">
+        <div class="chamber-scoreboard" id="chamberScoreboard"></div>
+        <div class="chamber-meta">
+          <div class="chamber-balance-wrap"><span class="chamber-balance-label">Balanço da Câmara</span><div class="chamber-balance" id="chamberBalance"></div></div>
+          <div class="chamber-callout" id="chamberCallout">Ainda sem maioria projetada</div>
+        </div>
+        <div class="chamber-stage">
+          <svg class="chamber-svg" id="chamberSvg" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet"></svg>
+          <div class="chamber-majority-pill"><span id="chamberMajorityPill">Maioria: 270 cadeiras</span></div>
+          <div class="chamber-legend" id="chamberLegend"></div>
+          <div class="chamber-foot"><span>Composição nacional inserida diretamente pela administração.</span><span id="chamberUpdatedAt">Ainda sem atualização.</span></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="panel timeline-panel" id="nightTimelinePanel">
@@ -646,6 +735,31 @@
       </div>
     </div>
 
+    <div id="congressAdminSection" style="display:none;">
+      <hr class="divider">
+      <div class="subhead">Congressista · Resultado Nacional da Câmara</div>
+      <div class="congress-admin-box">
+        <div class="hint" style="margin:0 0 8px;">A Câmara possui <b>538 cadeiras</b>. A maioria é <b>270</b>. Digite apenas quantas cadeiras estão projetadas para cada partido; o restante fica como <b>sem projeção</b>.</div>
+        <div class="congress-admin-grid">
+          <div class="congress-admin-stat" style="--ca-color:#2563EB;">
+            <label for="chamberDemInput">Partido Democrata</label>
+            <input id="chamberDemInput" type="number" min="0" max="538" step="1" value="0">
+          </div>
+          <div class="congress-admin-stat" style="--ca-color:#DC2626;">
+            <label for="chamberRepInput">Partido Republicano</label>
+            <input id="chamberRepInput" type="number" min="0" max="538" step="1" value="0">
+          </div>
+          <div class="congress-admin-stat" style="--ca-color:#94A3B8;">
+            <label>Sem projeção</label>
+            <div class="congress-admin-remaining" id="chamberRemainingPreview">538<small>cadeiras</small></div>
+          </div>
+        </div>
+        <div class="congress-admin-warning" id="chamberAdminWarning">A soma de Democratas e Republicanos não pode ultrapassar 538 cadeiras.</div>
+        <button class="save-btn" id="saveChamberBtn" style="width:100%;margin-top:12px;">Salvar Projeção da Câmara</button>
+      </div>
+    </div>
+
+    <div id="stateRaceAdminControls">
     <hr class="divider">
 
     <div class="subhead-row" id="candSectionToggle">
@@ -713,10 +827,12 @@
       <b>Dica de Fotos:</b> Você pode colar links diretos de imagens (.jpg, .png) da Wikipédia ou sites de notícias. Se deixar vazio, o sistema gera automaticamente um avatar elegante com as iniciais do candidato na cor do partido.
     </div>
 
+    </div><!-- /stateRaceAdminControls -->
+
     <div class="danger-zone">
       <div class="subhead">Zona de perigo</div>
       <div class="hint">
-        Apaga <b>todos</b> os resultados de Presidencial, Senado e Governador (candidatos, %, apuração, condados e projeções) — para todo mundo que estiver com o site aberto, instantaneamente. Não tem como desfazer.
+        Apaga <b>todos</b> os resultados de Presidencial, Congressista e Governador (candidatos, %, apuração, condados e projeções) — para todo mundo que estiver com o site aberto, instantaneamente. Não tem como desfazer.
       </div>
       <button class="reset-btn" id="resetAllBtn">Resetar tudo</button>
     </div>
@@ -813,7 +929,7 @@ const NAME_TO_ABBR = {
 };
 
 const RACE_KEYS = ["president","senate","governor"];
-const RACE_LABELS = {president:"Presidencial", senate:"Senado", governor:"Governador"};
+const RACE_LABELS = {president:"Presidencial", senate:"Congressista", governor:"Governador"};
 const RACE_NO_DC = {president:false, senate:true, governor:true};
 
 const FIPS_TO_ABBR = {
@@ -1037,16 +1153,18 @@ function defaultRace(national){
   return {candidates: national ? defaultCandidates() : [], states};
 }
 function defaultData(mode){
+  const senateRace=defaultRace(false);
+  senateRace.chamber={total:538,dem:0,rep:0,updatedAt:null};
   return {
     meta:{title:"ELECTION CENTER", updatedAt:null, mode: mode || "full"},
-    races:{president:defaultRace(true), senate:defaultRace(false), governor:defaultRace(false)},
+    races:{president:defaultRace(true), senate:senateRace, governor:defaultRace(false)},
     log:[],
     commentary:null
   };
 }
 
 // Em anos "só governador" (eleição especial), esconde as abas de Presidencial
-// e Senado — só existe a disputa de Governador.
+// e Congressista — só existe a disputa de Governador.
 function visibleRaceKeys(){
   return (data && data.meta && data.meta.mode === "governor") ? ["governor"] : RACE_KEYS;
 }
@@ -1055,8 +1173,8 @@ function applyYearMode(){
 }
 
 // Presidencial usa uma lista de candidatos nacional (race.candidates).
-// Senado e Governador usam uma lista própria POR ESTADO (cada estado tem
-// seus próprios nomes/partidos/cores), guardada em race.states[abbr].candidates.
+// Governador usa uma lista própria POR ESTADO. A aba Congressista mantém a chave
+// interna "senate" por compatibilidade, mas o resultado exibido é nacional (538 cadeiras).
 function getCandidates(raceKey, abbr){
   if(raceKey === "president") return data.races.president.candidates;
   const race = data.races[raceKey];
@@ -1215,6 +1333,174 @@ function renderTabs(){
     b.onclick = ()=>{ activeRace = k; clearCalculationCache(); renderAll(); };
     tabs.appendChild(b);
   });
+}
+
+
+function activeRaceUsesChamber(){
+  return activeRace === "senate";
+}
+
+function ensureChamberData(){
+  if(!data.races.senate.chamber || typeof data.races.senate.chamber !== "object"){
+    data.races.senate.chamber={total:538,dem:0,rep:0,updatedAt:null};
+  }
+  const ch=data.races.senate.chamber;
+  ch.total=538;
+  ch.dem=Math.max(0,Math.min(538,parseInt(ch.dem,10)||0));
+  ch.rep=Math.max(0,Math.min(538,parseInt(ch.rep,10)||0));
+  return ch;
+}
+
+function renderRaceStage(){
+  const chamber=activeRaceUsesChamber();
+  const mapPanel=document.getElementById("mapPanel");
+  const seatPanel=document.getElementById("seatChartPanel");
+  const nightDesk=document.getElementById("nightDeskPublic");
+  if(mapPanel) mapPanel.style.display=chamber?"none":"block";
+  if(seatPanel) seatPanel.style.display=chamber?"block":"none";
+  // Just Called / Race to Watch / Poll Closing são estaduais; na Câmara a leitura é nacional.
+  if(nightDesk) nightDesk.style.display=chamber?"none":"grid";
+  if(chamber) renderChamberProjection();
+}
+
+function renderChamberProjection(){
+  const svg=document.getElementById("chamberSvg");
+  const scoreboard=document.getElementById("chamberScoreboard");
+  const balance=document.getElementById("chamberBalance");
+  const legend=document.getElementById("chamberLegend");
+  const callout=document.getElementById("chamberCallout");
+  const pill=document.getElementById("chamberMajorityPill");
+  const topNote=document.getElementById("chamberTopNote");
+  const updated=document.getElementById("chamberUpdatedAt");
+  if(!svg||!scoreboard||!data?.races?.senate) return;
+
+  const demColor=getComputedStyle(document.documentElement).getPropertyValue('--blue-dem').trim() || '#2563EB';
+  const repColor=getComputedStyle(document.documentElement).getPropertyValue('--red-rep').trim() || '#DC2626';
+  const undColor='#CBD5E1';
+  const total=538, majority=270;
+  const ch=ensureChamberData();
+  const dem=Math.min(total,ch.dem);
+  const rep=Math.min(total-dem,ch.rep);
+  const und=Math.max(0,total-dem-rep);
+
+  topNote.textContent=`${majority} cadeiras para maioria · ${und} ainda não projetada(s)`;
+  if(dem>=majority){
+    pill.textContent=`Democratas · maioria projetada (${dem})`;
+    callout.textContent=`Democratas alcançam a maioria projetada`;
+  }else if(rep>=majority){
+    pill.textContent=`Republicanos · maioria projetada (${rep})`;
+    callout.textContent=`Republicanos alcançam a maioria projetada`;
+  }else if(dem===rep && dem>0){
+    pill.textContent=`Maioria: ${majority} cadeiras`;
+    callout.textContent=`Câmara empatada em ${dem} a ${rep}`;
+  }else if(dem>rep){
+    pill.textContent=`Maioria: ${majority} cadeiras`;
+    callout.textContent=`Democratas lideram com ${dem} cadeiras projetadas`;
+  }else if(rep>dem){
+    pill.textContent=`Maioria: ${majority} cadeiras`;
+    callout.textContent=`Republicanos lideram com ${rep} cadeiras projetadas`;
+  }else{
+    pill.textContent=`Maioria: ${majority} cadeiras`;
+    callout.textContent=`Ainda sem maioria projetada`;
+  }
+
+  const cards=[
+    {label:'Democratas',value:dem,color:demColor,sub:dem>=majority?'maioria projetada':`${Math.max(0,majority-dem)} para maioria`},
+    {label:'Sem projeção',value:und,color:'#94A3B8',sub:'cadeiras indefinidas'},
+    {label:'Republicanos',value:rep,color:repColor,sub:rep>=majority?'maioria projetada':`${Math.max(0,majority-rep)} para maioria`}
+  ];
+  scoreboard.innerHTML=cards.map(c=>`<div class="chamber-score" style="--ch-color:${c.color}"><div class="chamber-score-label">${ecEscape(c.label)}</div><div class="chamber-score-value">${c.value}</div><div class="chamber-score-sub">${ecEscape(c.sub)}</div></div>`).join('');
+
+  balance.innerHTML=`<span style="width:${dem/total*100}%;background:${demColor}"></span><span style="width:${und/total*100}%;background:${undColor}"></span><span style="width:${rep/total*100}%;background:${repColor}"></span>`;
+  legend.innerHTML=[['Democratas',demColor],['Republicanos',repColor],['Sem projeção',undColor]].map(([label,color])=>`<div class="chamber-legend-item"><span class="chamber-legend-dot" style="background:${color}"></span>${ecEscape(label)}</div>`).join('');
+
+  // 538 cadeiras em hemiciclo parlamentar. Primeiro geramos TODAS as posições
+  // e depois as ordenamos da esquerda para a direita pelo ângulo. Assim as
+  // bancadas formam blocos contínuos (DEM à esquerda, indefinidos no centro,
+  // GOP à direita), em vez de faixas horizontais por fileira.
+  const ordered=[];
+  for(let i=0;i<dem;i++) ordered.push(demColor);
+  for(let i=0;i<und;i++) ordered.push(undColor);
+  for(let i=0;i<rep;i++) ordered.push(repColor);
+
+  const cx=500,cy=472,rows=12,inner=120,outer=400;
+  const radii=Array.from({length:rows},(_,i)=>inner+(outer-inner)*(i/(rows-1)));
+  const sumR=radii.reduce((a,b)=>a+b,0);
+  const rowCounts=radii.map(r=>Math.max(10,Math.round(total*r/sumR)));
+  let n=rowCounts.reduce((a,b)=>a+b,0);
+  while(n<total){rowCounts[rowCounts.length-1]++;n++;}
+  while(n>total){
+    for(let i=rowCounts.length-1;i>=0&&n>total;i--){
+      if(rowCounts[i]>10){rowCounts[i]--;n--;}
+    }
+  }
+
+  const positions=[];
+  rowCounts.forEach((count,row)=>{
+    const r=radii[row];
+    for(let i=0;i<count;i++){
+      const a=count===1?Math.PI/2:Math.PI-(i*Math.PI/(count-1));
+      positions.push({
+        a,r,row,
+        x:cx+Math.cos(a)*r,
+        y:cy-Math.sin(a)*r
+      });
+    }
+  });
+
+  // π = extrema esquerda; 0 = extrema direita.
+  // O desempate por raio deixa a fronteira entre bancadas visualmente limpa.
+  positions.sort((p,q)=>(q.a-p.a)||(q.r-p.r));
+
+  let parts=[];
+  positions.forEach((p,idx)=>{
+    const color=ordered[idx]||undColor;
+    parts.push(`<circle class="chamber-seat" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="6.65" fill="${color}" stroke="#fff" stroke-width="0.9"></circle>`);
+  });
+
+  // A 270ª cadeira marca a maioria absoluta.
+  const ma=Math.PI-((majority-1)*Math.PI/Math.max(total-1,1));
+  const x1=cx+Math.cos(ma)*(inner-8),y1=cy-Math.sin(ma)*(inner-8);
+  const x2=cx+Math.cos(ma)*(outer+12),y2=cy-Math.sin(ma)*(outer+12);
+  const tx=cx+Math.cos(ma)*(outer+35),ty=cy-Math.sin(ma)*(outer+35);
+  parts.push(`<line class="chamber-centerline" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"></line>`);
+  parts.push(`<text class="chamber-centertext" x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" text-anchor="middle">MAIORIA ${majority}</text>`);
+  parts.push(`<path class="chamber-dais" d="M ${cx-176} ${cy+11} Q ${cx} ${cy-17} ${cx+176} ${cy+11} L ${cx+143} ${cy+34} Q ${cx} ${cy+15} ${cx-143} ${cy+34} Z"></path>`);
+  parts.push(`<text class="chamber-total" x="${cx}" y="${cy+1}" text-anchor="middle">538</text>`);
+  parts.push(`<text class="chamber-total-label" x="${cx}" y="${cy+22}" text-anchor="middle">CADEIRAS NA CÂMARA</text>`);
+  svg.innerHTML=parts.join('');
+
+  if(updated){
+    updated.textContent=ch.updatedAt ? `Última atualização: ${fmtTime(ch.updatedAt)}` : 'Ainda sem atualização.';
+  }
+}
+
+function updateChamberAdminPreview(){
+  const demEl=document.getElementById('chamberDemInput');
+  const repEl=document.getElementById('chamberRepInput');
+  const remEl=document.getElementById('chamberRemainingPreview');
+  const warn=document.getElementById('chamberAdminWarning');
+  if(!demEl||!repEl||!remEl) return;
+  const dem=Math.max(0,parseInt(demEl.value,10)||0);
+  const rep=Math.max(0,parseInt(repEl.value,10)||0);
+  const remaining=538-dem-rep;
+  remEl.innerHTML=`${Math.max(0,remaining)}<small>cadeiras</small>`;
+  if(warn) warn.style.display=remaining<0?'block':'none';
+}
+
+function renderCongressAdmin(){
+  const section=document.getElementById('congressAdminSection');
+  const stateControls=document.getElementById('stateRaceAdminControls');
+  const congress=activeRace==='senate';
+  if(section) section.style.display=(isAdmin&&congress)?'block':'none';
+  if(stateControls) stateControls.style.display=congress?'none':'block';
+  if(!isAdmin||!congress) return;
+  const ch=ensureChamberData();
+  const demEl=document.getElementById('chamberDemInput');
+  const repEl=document.getElementById('chamberRepInput');
+  if(demEl && document.activeElement!==demEl) demEl.value=ch.dem||0;
+  if(repEl && document.activeElement!==repEl) repEl.value=ch.rep||0;
+  updateChamberAdminPreview();
 }
 
 async function ensureCountiesLoaded(){
@@ -1818,7 +2104,7 @@ function renderPollClosing(){
 }
 
 function timelineMeta(type){
-  const map={projected:["PROJEÇÃO","#15803D"],unproject:["DECISION DESK","#94A3B8"],reporting:["APURAÇÃO","#2563EB"],county:["CONDADO","#D97706"],analyst:["ANÁLISE","#0A1930"],poll:["URNAS","#D97706"],watch:["DESTAQUE","#0F766E"],reset:["SISTEMA","#DC2626"],candidates:["REDAÇÃO","#7C3AED"],info:["ATUALIZAÇÃO","#64748B"]};
+  const map={projected:["PROJEÇÃO","#15803D"],unproject:["DECISION DESK","#94A3B8"],reporting:["APURAÇÃO","#2563EB"],county:["CONDADO","#D97706"],analyst:["ANÁLISE","#0A1930"],poll:["URNAS","#D97706"],watch:["DESTAQUE","#0F766E"],chamber:["CÂMARA","#7C3AED"],reset:["SISTEMA","#DC2626"],candidates:["REDAÇÃO","#7C3AED"],info:["ATUALIZAÇÃO","#64748B"]};
   return map[type]||["ATUALIZAÇÃO","#64748B"];
 }
 
@@ -1849,12 +2135,12 @@ function partyBucket(party){
 
 function renderRaceControl(){
   const host=document.getElementById("raceControlPanel"); if(!host) return;
-  if(activeRace==="president"){host.style.display="none";return;}
+  if(activeRace==="president" || activeRace==="senate"){host.style.display="none";return;}
   const race=data.races[activeRace], relevant=STATES.filter(s=>!(RACE_NO_DC[activeRace]&&s.a==="DC"));
   const buckets={}; let called=0;
   relevant.forEach(st=>{const id=race.states?.[st.a]?.projected;if(!id)return;const cand=getCandidates(activeRace,st.a).find(c=>c.id===id);if(!cand)return;called++;const b=partyBucket(cand.party);buckets[b.key] ||= {...b,count:0};buckets[b.key].count++;});
   const undecided=relevant.length-called, list=Object.values(buckets).sort((a,b)=>b.count-a.count).slice(0,3);
-  const title=activeRace==="senate"?"Senate Control":"Governors"; const target=activeRace==="senate"?Math.floor(relevant.length/2)+1:null;
+  const title="Governors"; const target=null;
   host.style.display="block";
   host.innerHTML=`<div class="rc-head"><div><div class="rc-eyebrow">Election Center · ${ecEscape(RACE_LABELS[activeRace])}</div><div class="rc-title">${title}</div></div><div class="rc-note">${target?`${target} cadeiras para maioria · `:""}${undecided} ainda não projetada(s)</div></div><div class="rc-body"><div class="rc-grid">${list.map(b=>`<div class="rc-party" style="--rc-color:${b.color}"><div class="rc-party-name">${ecEscape(b.label)}</div><div class="rc-party-score">${b.count} <small>projetadas</small></div></div>`).join("")}<div class="rc-party rc-undecided"><div class="rc-party-name">Ainda sem projeção</div><div class="rc-party-score">${undecided}</div></div></div></div>`;
 }
@@ -2357,7 +2643,12 @@ function renderAdmin(){
   document.getElementById("adminPanel").style.display = isAdmin ? "block" : "none";
   document.getElementById("adminToggle").textContent = isAdmin ? "Sair do modo admin" : "Entrar como admin";
   document.getElementById("adminToggle").classList.toggle("on", isAdmin);
-  if(isAdmin){ renderStateSelect(); renderAnalystAdminFields(); populateNightDeskAdmin(); }
+  if(isAdmin){
+    if(activeRace!=="senate") renderStateSelect();
+    renderAnalystAdminFields();
+    populateNightDeskAdmin();
+  }
+  renderCongressAdmin();
   renderYearSelector();
 }
 
@@ -2505,14 +2796,35 @@ async function renderAll(){
   document.getElementById("broadcastBoard").style.display = isPres ? "block" : "none";
   if(isPres) renderBroadcastBoard();
   renderElectionNightDesk();
+  renderRaceStage();
   renderBattlegrounds();
   renderAnalystBox();
   checkDecisionDesk();
   document.getElementById("updatedAt").textContent = fmtTime(data.meta.updatedAt);
   if(isAdmin){
-    renderStateSelect(); renderAnalystAdminFields(); populateNightDeskAdmin();
+    if(activeRace!=="senate") renderStateSelect();
+    renderAnalystAdminFields(); populateNightDeskAdmin();
   }
+  renderCongressAdmin();
 }
+
+document.getElementById('chamberDemInput')?.addEventListener('input',updateChamberAdminPreview);
+document.getElementById('chamberRepInput')?.addEventListener('input',updateChamberAdminPreview);
+document.getElementById('saveChamberBtn')?.addEventListener('click',async()=>{
+  const dem=Math.max(0,parseInt(document.getElementById('chamberDemInput').value,10)||0);
+  const rep=Math.max(0,parseInt(document.getElementById('chamberRepInput').value,10)||0);
+  if(dem+rep>538){
+    showToast('A soma não pode ultrapassar 538 cadeiras.');
+    updateChamberAdminPreview();
+    return;
+  }
+  const ch=ensureChamberData();
+  ch.dem=dem; ch.rep=rep; ch.total=538; ch.updatedAt=new Date().toISOString();
+  const remaining=538-dem-rep;
+  await persist(`Projeção da Câmara atualizada — DEM ${dem} · GOP ${rep} · ${remaining} sem projeção`, 'chamber');
+  await renderAll();
+  showToast('Projeção da Câmara salva.');
+});
 
 document.getElementById("decisionCloseBtn")?.addEventListener("click", hideDecisionDesk);
 document.getElementById("decisionOverlay")?.addEventListener("click", (e)=>{ if(e.target.id === "decisionOverlay") hideDecisionDesk(); });
@@ -2529,7 +2841,7 @@ document.getElementById("stateSelect").addEventListener("change", onStateSelectC
 document.getElementById("countySelect").addEventListener("change", onCountySelectChange);
 
 document.getElementById("resetAllBtn").addEventListener("click", async ()=>{
-  const conf = window.prompt('Isso apaga TODOS os resultados (Presidencial, Senado e Governador) para todo mundo, agora mesmo. Para confirmar, digite RESETAR:');
+  const conf = window.prompt('Isso apaga TODOS os resultados (Presidencial, Congressista e Governador) para todo mundo, agora mesmo. Para confirmar, digite RESETAR:');
   if(conf !== "RESETAR"){ showToast("Reset cancelado."); return; }
   const currentMode = (data.meta && data.meta.mode) || "full";
   data = defaultData(currentMode);
